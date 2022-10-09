@@ -1,4 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import supabase from '../data/supbase';
+import Toastify from 'toastify-js';
 
 interface SignUpModalProps {
   open: boolean | undefined;
@@ -23,6 +25,7 @@ const SignUpModal = (props: SignUpModalProps) => {
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [invalidName, setInvalidName] = useState(false);
   const [invalidUsername, setInvalidUsername] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const setValue = (event: ChangeEvent<HTMLInputElement>) => {
     const { target: { name, value } } = event;
@@ -37,7 +40,7 @@ const SignUpModal = (props: SignUpModalProps) => {
     }
   };
 
-  const signUp = () => {
+  const signUp = async () => {
     let valid = true;
     if (!name) {
       setInvalidName(true);
@@ -56,6 +59,31 @@ const SignUpModal = (props: SignUpModalProps) => {
       valid = false;
     }
     if (!valid) return;
+    setLoading(true);
+    const { user, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+      Toastify({
+        text: 'Hubo un error al crear tu usuario',
+        duration: 3000,
+        gravity: 'top',
+        position: 'right',
+      }).showToast();
+    } else {
+      const userToCreate = {
+        name,
+        uid: user?.id,
+        username,
+      }
+      await supabase.from('users').insert([userToCreate]);
+      Toastify({
+        text: 'Ya creaste tu cuenta, prepárate para jugar.',
+        duration: 3000,
+        gravity: 'top',
+        position: 'right',
+      }).showToast();
+      onClose();
+    }
+    setLoading(false);
   }
 
   return (
@@ -77,7 +105,7 @@ const SignUpModal = (props: SignUpModalProps) => {
         <label htmlFor="password">Contraseña *</label>
         <input type="password" id="password-signup" name="password" placeholder="********" aria-invalid={invalidPassword||undefined} onChange={setValue}/>
         { invalidPassword && <small>La contraseña es requerida.</small>}
-        <button type="button" className="outline" onClick={signUp}>Crear cuenta</button>
+        <button type="button" className="outline" onClick={signUp} aria-busy={loading}>Crear cuenta</button>
       </article>
     </dialog>
   );
