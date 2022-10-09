@@ -1,10 +1,12 @@
 import { ChangeEvent, useState } from 'react'
+import SignUpModal from './components/SignUpModal';
 
 function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const setValue = (event: ChangeEvent<HTMLInputElement>) => {
     const { target: { name, value } } = event;
@@ -38,9 +40,10 @@ function App() {
         <label htmlFor="password">Contraseña</label>
         <input type="password" id="password" name="password" placeholder="********" aria-invalid={invalidPassword||undefined} onChange={setValue}/>
         { invalidPassword && <small>La contraseña es requerida.</small>}
-        <button type="button" onClick={login}>Submit</button>
-        <p>¿No tienes una cuenta? Crea una <a href=''>aquí</a></p>
+        <button type="button" onClick={login}>Ingresar</button>
+        <p>¿No tienes una cuenta? Crea una <a className='clickable' onClick={() => setOpenDialog(true)}>aquí</a></p>
       </article>
+      <SignUpModal open={openDialog} onClose={() => setOpenDialog(false)}/>
     </main>
   )
 }
