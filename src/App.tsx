@@ -1,33 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { ChangeEvent, useState } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [invalidPassword, setInvalidPassword] = useState(false);
+
+  const setValue = (event: ChangeEvent<HTMLInputElement>) => {
+    const { target: { name, value } } = event;
+    if (name === 'email') {
+      setEmail(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
+  };
+
+  const login = () => {
+    let valid = true;
+    if (!password) {
+      setInvalidPassword(true);
+      valid = false;
+    }
+    if (!email) {
+      setInvalidEmail(true);
+      valid = false;
+    }
+    if (!valid) return;
+  }
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <main className='container full-height a-flex a-center a-align-items-center'>
+      <article>
+        <h1>Iniciar sesión</h1>
+        <label htmlFor="email">Correo</label>
+        <input type="email" id="email" name="email" placeholder="johndoe@email.com" aria-invalid={invalidEmail||undefined} onChange={setValue} />
+        { invalidEmail && <small>El correo es requerido.</small>}
+        <label htmlFor="password">Contraseña</label>
+        <input type="password" id="password" name="password" placeholder="********" aria-invalid={invalidPassword||undefined} onChange={setValue}/>
+        { invalidPassword && <small>La contraseña es requerida.</small>}
+        <button type="button" onClick={login}>Submit</button>
+        <p>¿No tienes una cuenta? Crea una <a href=''>aquí</a></p>
+      </article>
+    </main>
   )
 }
 
