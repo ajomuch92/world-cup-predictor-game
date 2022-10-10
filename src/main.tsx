@@ -10,6 +10,7 @@ import 'a-flexbox/a-flexbox.css';
 import '@picocss/pico';
 import 'toastify-js/src/toastify.css';
 import Predictor from './views/Predictor';
+import League from './views/League';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
   {
     path: '/home',
     element: <Predictor />
-  }
+  },
+  {
+    path: '/leagues',
+    element: <League />
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
