@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Toastify from 'toastify-js';
 
 function App() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [invalidEmail, setInvalidEmail] = useState(false);
