@@ -1,8 +1,8 @@
+import NavHeader from "../components/NavHeader";
+
 const League = () => {
   return (
-    <main>
-      Predictor
-    </main>
+    <>Predictor</>
   );
 };
 

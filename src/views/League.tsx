@@ -1,8 +1,14 @@
+import CreateLeagueButton from '../components/CreateLeagueButton';
+import JoinLeagueButton from '../components/JoinLeagueButton';
+
 const League = () => {
   return (
-    <main>
-      Leagues
-    </main>
+    <>
+      <section className="a-flex gap-1">
+        <CreateLeagueButton />
+        <JoinLeagueButton />
+      </section>
+    </>
   );
 };
 
